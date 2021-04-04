@@ -117,7 +117,7 @@ function futureCondition(lat, lon) {
 $("#searchBtn").on("click", function(event) {
     event.preventDefault();
 
-    var city = $("#enterCity").val().trim();
+    var city = $("#cityInput").val().trim();
     currentCondition(city);
     if (!searchHistoryList.includes(city)) {
         searchHistoryList.push(city);
