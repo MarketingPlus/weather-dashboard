@@ -7,17 +7,18 @@ var searchHistoryList = [];
 // ============================== FUNCTIONS ====================================
 // function to check for the current weather condition
 function currentCondition(city) {
-    var queryURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
+
+    var queryURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
 
     $.ajax({
-        url: gueryURL,
+        url: queryURL,
         method: "GET"
     }).then(function(cityWeatherResponse) {
-        console.log(cityWeatherResponse); 
-
+        console.log(cityWeatherResponse);
+        
         $("#weatherContent").css("display", "block");
         $("#cityDetail").empty();
-
+        
         var iconCode = cityWeatherResponse.weather[0].icon;
         var iconURL = `https://openweathermap.org/img/w/${iconCode}.png`;
 
@@ -33,8 +34,8 @@ function currentCondition(city) {
         $("#cityDetail").append(currentCity);
 
         // UV Index
-        var lat = cityWeatherResponse.lat
-        var lon = cityWeatherResponse.long
+        var lat = cityWeatherResponse.coord.lat;
+        var lon = cityWeatherResponse.coord.lon;
         var uviQueryURL = `https://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=${apiKey}`;
 
         $.ajax({
@@ -44,13 +45,13 @@ function currentCondition(city) {
             console.log(uviResponse);
 
             var uvIndex = uviResponse.value;
-            var uvIdenxP = $(`
-            <p>UV Index: 
-                <span id="uvIndexColor" class="px-2 py-2 rounded">${uvIndex}</span>
-            </p>
+            var uvIndexP = $(`
+                <p>UV Index: 
+                    <span id="uvIndexColor" class="px-2 py-2 rounded">${uvIndex}</span>
+                </p>
             `);
 
-            $("#cityDetail").append(uvIdenxP);
+            $("#cityDetail").append(uvIndexP);
 
             futureCondition(lat, lon);
 
@@ -65,14 +66,15 @@ function currentCondition(city) {
                 $("#uvIndexColor").css("background-color", "#E53210").css("color", "white");
             } else {
                 $("#uvIndexColor").css("background-color", "#B567A4").css("color", "white"); 
-            };
+            };  
         });
     });
 }
 
 // function for the future 5 days condition
 function futureCondition(lat, lon) {
-    var futureURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&exclude=current,minutely,hourly,alerts&appid=${apiKey}`;
+
+    var futureURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&exclude=current,minutely,hourly,alerts&appid=${apiKey}`;
 
     $.ajax({
         url: futureURL,
@@ -81,7 +83,7 @@ function futureCondition(lat, lon) {
         console.log(futureResponse);
         $("#fiveDay").empty();
 
-        for (let i = 1; 1 < 6; i++) {
+        for (let i = 1; i < 6; i++) {
             var cityInfo = {
                 date: futureResponse.daily[i].dt,
                 icon: futureResponse.daily[i].weather[0].icon,
@@ -89,7 +91,7 @@ function futureCondition(lat, lon) {
                 humidity: futureResponse.daily[i].humidity
             };
 
-            var currDate = moment.unix(cityInfo.date).format("DD/MM/YYYY");
+            var currDate = moment.unix(cityInfo.date).format("MM/DD/YYYY");
             var iconURL = `<img src="https://openweathermap.org/img/w/${cityInfo.icon}.png" alt="${futureResponse.daily[i].weather[0].main}" />`;
             
             var futureCard = $(`
@@ -98,7 +100,7 @@ function futureCondition(lat, lon) {
                         <div class="card-body">
                             <h5>${currDate}</h5>
                             <p>${iconURL}</p>
-                            <p>Temp:${cityInfo.temp}°C</p>
+                            <p>Temp: ${cityInfo.temp} °C</p>
                             <p>Humidity: ${cityInfo.humidity}\%</p>
                         </div>
                     </div>
@@ -124,7 +126,7 @@ $("#searchBtn").on("click", function(event) {
             `);
         $("#searchHistory").append(searchedCity);
     };
-
+    
     localStorage.setItem("city", JSON.stringify(searchHistoryList));
     console.log(searchHistoryList);
 });
