@@ -1,7 +1,10 @@
+// ============================= VARIABLES ====================================
+var apiKey = "0359154709f46ac528722b59c9dd068d";
 var today = moment().format('L');
 var searchHistoryList = [];
-var apiKey = "0359154709f46ac528722b59c9dd068d";
 
+
+// ============================== FUNCTIONS ====================================
 // function to check for the current weather condition
 function currentCondition(city) {
     var queryURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
@@ -50,7 +53,43 @@ function currentCondition(city) {
             $("#cityDetail").append(uvIdenxP);
 
             futureCondition(lat, lon);
-        })
 
+            // UV Index colour changer
+            if (uvIndex >= 0 && uvIndex <= 2) {
+                $("#uvIndexColor").css("background-color", "#3EA72D").css("color", "white");
+            } else if (uvIndex >= 3 && uvIndex <= 5) {
+                $("#uvIndexColor").css("background-color", "#FFF300");
+            } else if (uvIndex >= 6 && uvIndex <= 7) {
+                $("#uvIndexColor").css("background-color", "#F18B00");
+            } else if (uvIndex >= 8 && uvIndex <= 10) {
+                $("#uvIndexColor").css("background-color", "#E53210").css("color", "white");
+            } else {
+                $("#uvIndexColor").css("background-color", "#B567A4").css("color", "white"); 
+            };
+        });
+    });
+}
+
+// function for the future 5 days condition
+function futureCondition(lat, lon) {
+    var futureURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&exclude=current,minutely,hourly,alerts&appid=${apiKey}`;
+
+    $.ajax({
+        url: futureURL,
+        method: "GET"
+    }).then(function(futureResponse) {
+        console.log(futureResponse);
+        $("#fiveDay").empty();
+
+        for (let i = 1; 1 < 6; i++) {
+            var cityInfo = {
+                date: futureResponse.daily[i].dt,
+                icon: futureResponse.daily[i].weather[0].icon,
+                temp: futureResponse.daily[i].temp.day,
+                humidity: futureResponse.daily[i].humidity
+        };
+
+    
     })
+    
 }
