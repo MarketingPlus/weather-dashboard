@@ -41,6 +41,15 @@ function currentCondition(city) {
             console.log(uviResponse);
 
             var uvIndex = uviResponse.value;
+            var uvIdenxP = $(`
+            <p>UV Index: 
+                <span id="uvIndexColor" class="px-2 py-2 rounded">${uvIndex}</span>
+            </p>
+            `);
+
+            $("#cityDetail").append(uvIdenxP);
+
+            futureCondition(lat, lon);
         })
 
     })
