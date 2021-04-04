@@ -91,14 +91,14 @@ function futureCondition(lat, lon) {
 
             var currDate = moment.unix(cityInfo.date).format("DD/MM/YYYY");
             var iconURL = `<img src="https://openweathermap.org/img/w/${cityInfo.icon}.png" alt="${futureResponse.daily[i].weather[0].main}" />`;
-
+            var calulation = (${cityInfo.temp}-32)*5/9
             var futureCard = $(`
                 <div class="pl-3">
                     <div class="card pl-3 pt-3 mb-3 bg-primary text-light" style="width: 12rem;>
                         <div class="card-body">
                             <h5>${currDate}</h5>
                             <p>${iconURL}</p>
-                            <p>Temp: ${cityInfo.temp} °F</p>
+                            <p>Temp: ${calulation} °C</p>
                             <p>Humidity: ${cityInfo.humidity}\%</p>
                         </div>
                     </div>
@@ -115,5 +115,22 @@ function futureCondition(lat, lon) {
 $("#searchBtn").on("click", function(event) {
     event.preventDefault();
 
-    var city = 
-})
+    var city = $("#enterCity").val().trim();
+    currentCondition(city);
+    if (!searchHistoryList.includes(city)) {
+        searchHistoryList.push(city);
+        var searchedCity = $(`
+            <li class="list-group-item">${city}</li>
+            `);
+        $("#searchHistory").append(searchedCity);
+    };
+
+    localStorage.setItem("city", JSON.stringify(searchHistoryList));
+    console.log(searchHistoryList);
+});
+
+// sidebar history click
+$(document).on("click", ".list-group-item", function() {
+    var listCity = $(this).text();
+    currentCondition(listCity);
+});
