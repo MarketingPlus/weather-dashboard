@@ -1,0 +1,40 @@
+/* =========================== TEXT STYLING ================ */
+
+h1 {
+  font-size: 50px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  color: #fff;
+}
+
+p
+
+/* =========================== ID STYLING ================= */
+#weatherContent {
+  display: none;
+}
+
+#cityDetail,
+#uvIndexColor,
+li {
+  color: #4d4f53 !important;
+}
+
+#seachResults,
+#cityDetail,
+.card {
+  background-color: #5a6c73 !important;
+}
+
+#searchResults {
+  height: 100vh;
+}
+
+#fiveDay .card {
+  border: 1px solid white !important;
+}
+
+#searchHistory li {
+  background-color: #97a6a4;
+  color: #fff !important;
+}
