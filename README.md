@@ -91,3 +91,9 @@ function futureCondition(lat, lon) {
 [REPOSITARY](https://github.com/MarketingPlus/weather-dashboard/)
 
 [WEBSITE](https://marketingplus.github.io/weather-dashboard/)
+
+## License
+
+  Copyright (c) Benjamin Wilson. All rights reserved.
+  
+  Licensed under the [MIT](LICENSE) license.
